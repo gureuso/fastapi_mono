@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os
 
 from config import Config
@@ -15,9 +16,9 @@ except FileNotFoundError:
 if __name__ == '__main__':
     import uvicorn
     uvicorn.run(
-        'apps.main:app',
+        'apps.admin.main:app',
         host=Config.APP_HOST,
-        port=Config.APP_PORT,
+        port=8889,
         reload=True if Config.APP_MODE == Config.APP_MODE_DEVELOPMENT else False,
         workers=4,
         log_level='info',

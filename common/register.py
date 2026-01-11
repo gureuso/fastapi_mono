@@ -6,18 +6,19 @@ from fastapi import FastAPI
 
 
 class APIRouterRegister:
-    def __init__(self, app: FastAPI, module_path: str, controller_name: str):
+    def __init__(self, app: FastAPI, project_path: str):
         self.app = app
-        self.module_path = module_path
-        self.controller_name = controller_name
-        self.controller_path = os.path.join(*[os.getcwd(), 'apps'])
+        self.module_path = 'apps'
+        self.controller_name = 'router'
+        self.project_path = project_path
+        self.controller_path = os.path.join(*[os.getcwd()])
         self.directories = []
 
     def register(self):
         self._find_dir(self.controller_path)
         for dir_path in self.directories:
             dir_path = dir_path[1:].replace('/', '.').replace('\\', '.')
-            module_path = '{}.{}.{}'.format(self.module_path, dir_path, self.controller_name)
+            module_path = '{}.{}.{}.{}'.format(self.module_path, self.project_path, dir_path, self.controller_name)
             module = importlib.import_module(module_path)
             self.app.include_router(module.router)
 

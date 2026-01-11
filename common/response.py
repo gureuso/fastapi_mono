@@ -53,6 +53,12 @@ async def verify_token(request: Request) -> None | UserEntity:
     token = request.cookies.get('x-access-token') or request.headers.get('x-access-token')
     if not token:
         return None
+
+    try:
+        jwt.decode(token, Config.SECRET, algorithms=['HS256'])
+    except jwt.exceptions.ExpiredSignatureError:
+        return None
+
     jwt_data = jwt.decode(token, Config.SECRET, algorithms=['HS256'])
     current_user = await UserService.find_one_by_id(jwt_data['id'])
     if not current_user:

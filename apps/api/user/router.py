@@ -23,7 +23,7 @@ class TokenItem(BaseModel):
 @router.get('/signout')
 async def signout():
     response = RedirectResponse(
-        url='http://localhost:8888', status_code=status.HTTP_302_FOUND)
+        url='http://localhost:8889', status_code=status.HTTP_302_FOUND)
     response.delete_cookie(
         key='x-access-token',
         domain='localhost',
@@ -46,7 +46,7 @@ async def callback(provider: Literal['google', 'facebook', 'kakao', 'naver', 'gi
         await UserService.update_num(user)
 
     response = RedirectResponse(
-        url='http://localhost:8888/admin',
+        url='http://localhost:8889/admin',
         status_code=status.HTTP_302_FOUND
     )
     new_token = jwt.encode({'id': user.id, 'exp': datetime.utcnow() + timedelta(hours=1)}, JsonConfig.get_data('SECRET'), algorithm='HS256')

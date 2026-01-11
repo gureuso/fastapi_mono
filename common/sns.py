@@ -3,7 +3,7 @@ from pydantic import BaseModel, EmailStr
 from typing import Literal
 
 from common.response import BadRequestException
-from config import JsonConfig, Config
+from config import JsonConfig
 
 
 class SnsLoginItem(BaseModel):

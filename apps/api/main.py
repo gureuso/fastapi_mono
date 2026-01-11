@@ -42,7 +42,7 @@ def doc_auth(credentials: HTTPBasicCredentials = Depends(security)):
         )
 
 app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None, lifespan=lifespan)
-APIRouterRegister(app, 'apps', 'router').register()
+APIRouterRegister(app, 'api').register()
 app.add_middleware(
     CORSMiddleware,
     allow_origins=['*'],
@@ -69,7 +69,7 @@ async def chat_endpoint(websocket: WebSocket, room: str):
 
 @app.exception_handler(RequestValidationError)
 async def request_validation_exception_handler(request: Request, exc: RequestValidationError):
-    return JSONResponse(status_code=422, content=error(422 * 100))
+    return JSONResponse(status_code=422, content=error(42200))
 
 
 @app.exception_handler(BadRequestException)

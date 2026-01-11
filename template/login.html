@@ -44,7 +44,7 @@
     const protocol = location.protocol;
     const port = location.port ? ':'+location.port : '';
     const hostname = window.location.hostname;
-    return protocol + '//' + hostname + port + '/api/users/callback/' + provider;
+    return protocol + '//' + hostname + ':8888' + '/api/users/callback/' + provider;
   }
 </script>
 {% endblock %}
