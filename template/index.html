@@ -1,0 +1,17 @@
+{% extends 'layout/base.html' %}
+
+{% block header %}
+  <title>index</title>
+{% endblock %}
+
+{% block content %}
+<div class="row p-3">
+  {% if current_user is none %}
+    <h1>로그인 필요</h1>
+  {% else %}
+    <h1>{{ current_user.email }}</h1>
+  {% endif %}
+</div>
+{% endblock %}
+{% block script %}
+{% endblock %}
