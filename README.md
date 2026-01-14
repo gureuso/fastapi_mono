@@ -44,3 +44,12 @@ create database Mono
 $ alembic upgrade head
 ```
 create db and migrate tables
+
+
+### 4. E2EE
+```sh
+$ openssl genpkey -algorithm RSA -out private.pem -pkeyopt rsa_keygen_bits:3072
+$ openssl rsa -pubout -in private.pem -out public.pem
+```
+
+create public, private key pem
