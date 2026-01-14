@@ -145,3 +145,6 @@ config.json
 .DS_Store
 
 !alembic/versions/.gitkeep
+
+private.pem
+public.pem

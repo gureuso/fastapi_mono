@@ -1,11 +1,10 @@
+import jwt
 import json
 import re
-from base64 import b64decode
-
-import jwt
+from base64 import b64decode, b64encode
 from fastapi.requests import Request
 
-from common.auth import decrypt_with_private_key
+from common.auth import decrypt_with_private_key, encrypt_with_public_key
 from common.database.mysql.entity import UserEntity
 from common.service.user import UserService
 from config import Config
@@ -55,11 +54,10 @@ async def verify_token(request: Request) -> None | UserEntity:
         return None
 
     try:
-        jwt.decode(token, Config.SECRET, algorithms=['HS256'])
+        jwt_data = jwt.decode(token, Config.SECRET, algorithms=['HS256'])
     except jwt.exceptions.ExpiredSignatureError:
         return None
 
-    jwt_data = jwt.decode(token, Config.SECRET, algorithms=['HS256'])
     current_user = await UserService.find_one_by_id(jwt_data['id'])
     if not current_user:
         return None
@@ -73,11 +71,10 @@ async def verify_api_token(request: Request) -> UserEntity:
         raise PermissionDeniedException()
 
     try:
-        jwt.decode(token, Config.SECRET, algorithms=['HS256'])
+        jwt_data = jwt.decode(token, Config.SECRET, algorithms=['HS256'])
     except jwt.exceptions.ExpiredSignatureError:
         raise PermissionDeniedException()
 
-    jwt_data = jwt.decode(token, Config.SECRET, algorithms=['HS256'], options={'verify_exp': False})
     current_user = await UserService.find_one_by_id(jwt_data['id'])
     if not current_user:
         raise PermissionDeniedException()
@@ -86,10 +83,13 @@ async def verify_api_token(request: Request) -> UserEntity:
 
 
 async def parse_decrypted_item(request: Request) -> dict:
-    # plaintext = json.dumps({'a': '1234'}).encode()
-    # ciphertext = encrypt_with_public_key(plaintext)
-    # payload = b64encode(ciphertext).decode()
+    plaintext = json.dumps({'a': '1234'}).encode()
+    ciphertext = encrypt_with_public_key(plaintext)
+    payload = b64encode(ciphertext).decode()
+    print(payload)
 
-    data = await request.json()
-    decrypted = decrypt_with_private_key(b64decode(data['content']))
+    # data = await request.json()
+    # decrypted = decrypt_with_private_key(b64decode(data['content']))
+    decrypted = decrypt_with_private_key(b64decode(payload))
+    print(json.loads(decrypted.decode('utf-8')))
     return json.loads(decrypted.decode('utf-8'))
