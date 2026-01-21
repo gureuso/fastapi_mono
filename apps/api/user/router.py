@@ -23,7 +23,7 @@ class TokenItem(BaseModel):
 @router.get('/signout')
 async def signout():
     response = RedirectResponse(
-        url='http://localhost:8889', status_code=status.HTTP_302_FOUND)
+        url='http://localhost:8889/admin', status_code=status.HTTP_302_FOUND)
     response.delete_cookie(
         key='x-access-token',
         domain='localhost',

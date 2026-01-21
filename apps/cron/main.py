@@ -26,7 +26,7 @@ async def lifespan(app: FastAPI):
     await read_database.disconnect()
 
 app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None, lifespan=lifespan)
-APIRouterRegister(app, 'admin').register()
+# APIRouterRegister(app, 'cron').register()
 app.add_middleware(
     CORSMiddleware,
     allow_origins=['*'],
