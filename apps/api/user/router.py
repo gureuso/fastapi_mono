@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import jwt
 from typing import Literal
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, UTC
 from fastapi import APIRouter, status
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse
@@ -49,6 +49,6 @@ async def callback(provider: Literal['google', 'facebook', 'kakao', 'naver', 'gi
         url='http://localhost:8889/admin',
         status_code=status.HTTP_302_FOUND
     )
-    new_token = jwt.encode({'id': user.id, 'exp': datetime.utcnow() + timedelta(hours=1)}, JsonConfig.get_data('SECRET'), algorithm='HS256')
+    new_token = jwt.encode({'id': user.id, 'exp': datetime.now(UTC) + timedelta(hours=4)}, JsonConfig.get_data('SECRET'), algorithm='HS256')
     response.set_cookie('x-access-token', new_token, httponly=True)
     return response

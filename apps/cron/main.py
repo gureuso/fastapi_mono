@@ -8,8 +8,8 @@ from fastapi.templating import Jinja2Templates
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 
+from apps.cron import scheduler
 from common.database.mysql.read import read_database
-from common.register import APIRouterRegister
 from common.response import PermissionDeniedException, error, NotFoundException, BadRequestException
 from common.database.mysql.write import write_database
 from config import Config
@@ -19,7 +19,6 @@ from config import Config
 async def lifespan(app: FastAPI):
     await write_database.connect()
     await read_database.connect()
-    from apps.cron import scheduler
     scheduler.start()
     yield
     await write_database.disconnect()
